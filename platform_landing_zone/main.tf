@@ -13,12 +13,6 @@ terraform {
   }
 
   # Comment out this backend for local deployments using PowerShell/VSCODE, leave it uncommented for use with Azure DevOps (ADO) pipelines
-    backend "azurerm" {
-    #  resource_group_name  = "rgocceus2prdtf001"  
-    #  storage_account_name = "stocceus2prd001"
-    #  container_name       = "terraform"
-    #  key                  = "mg-platform-repo-occ-azure-infrastructure-eastus2.tfstate"
-  }
 
   required_version = ">= 1.1.0"
 }
@@ -104,10 +98,10 @@ locals {
 #--[ TOGGLES ]-----------------------------------------------------------------------------------------------------------------------------
 
 variable "enable_connectivity_subscription"  {
-  default = true 
+  default = false 
 }
 variable "enable_identity_subscription"  {
-  default = true 
+  default = false 
 }
 variable "enable_management_subscription"  {
   default = true 
@@ -229,32 +223,6 @@ variable "mgmt_vm_details" {
 
 #==[ PROVIDERS ]===========================================================================================================================
 
-# Connectivity Subscription
-provider "azurerm" {
-  alias           = "connectivity-sub"
-  subscription_id = var.connectivity_subscription_id
-  tenant_id       = var.tenant_id
-  client_id       = var.client_id
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
-}
-
-# Identity Subscription
-provider "azurerm" {
-  alias           = "identity-sub"
-  subscription_id = var.identity_subscription_id
-  tenant_id       = var.tenant_id
-  client_id       = var.client_id
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
-}
-
 # Management Subscription
 provider "azurerm" {
   alias           = "management-sub"
@@ -302,143 +270,75 @@ module "management_subscription" {
 
 }
 
-#--[ CONNECTIVITY ]------------------------------------------------------------------------------------------------------------------------
-
-module "connectivity_subscription" {
-  providers = {
-    azurerm = azurerm.connectivity-sub
-  }
-  source = "./subscriptions/connectivity"
-  count                                 = var.enable_connectivity_subscription == true ? 1 : 0
-  application_name                      = var.application_name
-  subscription_type                     = local.subscription_types.connectivity
-  environment                           = var.environment
-  location                              = var.location
-  instance_number                       = var.instance_number
-  tenant_id                             = var.tenant_id
-  client_id                             = var.client_id
-  client_secret                         = var.client_secret
-  email                                 = var.email
-  phone                                 = var.phone
-  log_analytics_workspace_id            = module.management_subscription[0].log_analytics_workspace_id
-  log_analytics_workspace_workspace_id  = module.management_subscription[0].log_analytics_workspace_workspace_id
-  log_analytics_workspace_key           = module.management_subscription[0].log_analytics_workspace_key
-  connectivity_vnet_address_space       = var.connectivity_vnet_address_space
-  gateway_subnet_address_prefixes       = var.gateway_subnet_address_prefixes
-  firewall_subnet_address_prefixes      = var.firewall_subnet_address_prefixes
-  azbastion_subnet_address_prefixes     = var.azbastion_subnet_address_prefixes
-  firewall_mgmt_subnet_address_prefixes = var.firewall_mgmt_subnet_address_prefixes
-  location_short_name                   = var.location_short_name
-  orgid                                 = var.orgid
-  local_gtwy_pip                        = var.local_gtwy_pip
-  local_gtwy_cidr                       = var.local_gtwy_cidr
-  gtwy_shared_key                       = var.gtwy_shared_key
-  iden_cmp_subnet_address_prefixes      = var.iden_cmp_subnet_address_prefixes
-  mgmt_cmp_subnet_address_prefixes      = var.mgmt_cmp_subnet_address_prefixes
-  depends_on                            = [ module.management_subscription ]
-}
-
-
-#--[ IDENTITY ]----------------------------------------------------------------------------------------------------------------------------
-
-module "identity_subscription" {
-  providers = {
-    azurerm = azurerm.identity-sub
-  }
-  source                      = "./subscriptions/identity"
-  count                       = var.enable_identity_subscription == true ? 1 : 0
-  application_name            = var.application_name
-  subscription_type           = local.subscription_types.identity
-  environment                 = var.environment
-  location                    = var.location
-  instance_number             = var.instance_number
-  tenant_id                   = var.tenant_id
-  client_id                   = var.client_id
-  client_secret               = var.client_secret
-  email                       = var.email
-  phone                       = var.phone
-  vm_username                 = var.vm_username
-  identity_vnet_address_space = var.identity_vnet_address_space
-  iden_cmp_subnet_address_prefixes = var.iden_cmp_subnet_address_prefixes
-  iden_pvtlink_subnet_address_prefixes = var.iden_pvtlink_subnet_address_prefixes
-  log_analytics_workspace_id  = module.management_subscription[0].log_analytics_workspace_id
-  location_short_name         = var.location_short_name
-  orgid                       = var.orgid
-  dc_vm_details               = var.dc_vm_details
-  vm_size                     = var.vm_size
-  vm_admin_password           = var.vm_admin_password
-  default_network_security_group_rules = var. default_network_security_group_rules
-  depends_on                  = [ module.management_subscription ]
-}
 
 
 # #=======================[ VIRTUAL NETWORK (VNET) PEERING ]==================================================================================================]]]]
 
 # #--[ EastUS2 CONNECTIVITY  <-> EastUS2 Identity SPOKE ]--------------------------------------------------------------------------------------------------
 
-resource "azurerm_virtual_network_peering" "connectivity_hub-identity_spoke-peer" {
-  name                         = "peer-connectivity-hub-identity-spoke"
-  provider                     = azurerm.connectivity-sub
-  resource_group_name          = module.connectivity_subscription[0].resource_group_name
-  virtual_network_name         = module.connectivity_subscription[0].virtual_network_name
-  remote_virtual_network_id    = module.identity_subscription[0].virtual_network_id
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = true
-  use_remote_gateways          = false
-  depends_on                   = [ 
-    module.connectivity_subscription, 
-    module.identity_subscription
-  ]
-}
+# resource "azurerm_virtual_network_peering" "connectivity_hub-identity_spoke-peer" {
+#   name                         = "peer-connectivity-hub-identity-spoke"
+#   provider                     = azurerm.connectivity-sub
+#   resource_group_name          = module.connectivity_subscription[0].resource_group_name
+#   virtual_network_name         = module.connectivity_subscription[0].virtual_network_name
+#   remote_virtual_network_id    = module.identity_subscription[0].virtual_network_id
+#   allow_virtual_network_access = true
+#   allow_forwarded_traffic      = true
+#   allow_gateway_transit        = true
+#   use_remote_gateways          = false
+#   depends_on                   = [ 
+#     module.connectivity_subscription, 
+#     module.identity_subscription
+#   ]
+# }
 
-resource "azurerm_virtual_network_peering" "identity_spoke-connectivity_hub-peer" {
-  name                         = "peer-identity-spoke-connectivity-hub"
-  provider                     = azurerm.identity-sub
-  resource_group_name          = module.identity_subscription[0].resource_group_name
-  virtual_network_name         = module.identity_subscription[0].virtual_network_name
-  remote_virtual_network_id    = module.connectivity_subscription[0].virtual_network_id
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
-  use_remote_gateways          = true
-  depends_on                   = [
-    module.connectivity_subscription, 
-    module.identity_subscription
-  ]
-}
+# resource "azurerm_virtual_network_peering" "identity_spoke-connectivity_hub-peer" {
+#   name                         = "peer-identity-spoke-connectivity-hub"
+#   provider                     = azurerm.identity-sub
+#   resource_group_name          = module.identity_subscription[0].resource_group_name
+#   virtual_network_name         = module.identity_subscription[0].virtual_network_name
+#   remote_virtual_network_id    = module.connectivity_subscription[0].virtual_network_id
+#   allow_virtual_network_access = true
+#   allow_forwarded_traffic      = true
+#   allow_gateway_transit        = false
+#   use_remote_gateways          = true
+#   depends_on                   = [
+#     module.connectivity_subscription, 
+#     module.identity_subscription
+#   ]
+# }
 
 # #--[ EastUS2 Management SPOKE <-> EastUS2 CONNECTIVITY HUB ]--------------------------------------------------------------------------------------------------
 
 
-resource "azurerm_virtual_network_peering" "management_spoke-connectivity_hub-peer" {
-  name                         = "peer-management-spoke-connectivity-hub"
-  provider                     = azurerm.management-sub
-  resource_group_name          = module.management_subscription[0].resource_group_name
-  virtual_network_name         = module.management_subscription[0].virtual_network_name
-  remote_virtual_network_id    = module.connectivity_subscription[0].virtual_network_id
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = false
-  use_remote_gateways          = true
-  depends_on                   = [
-    module.connectivity_subscription, 
-    module.management_subscription
-  ]
-}
+# resource "azurerm_virtual_network_peering" "management_spoke-connectivity_hub-peer" {
+#   name                         = "peer-management-spoke-connectivity-hub"
+#   provider                     = azurerm.management-sub
+#   resource_group_name          = module.management_subscription[0].resource_group_name
+#   virtual_network_name         = module.management_subscription[0].virtual_network_name
+#   remote_virtual_network_id    = module.connectivity_subscription[0].virtual_network_id
+#   allow_virtual_network_access = true
+#   allow_forwarded_traffic      = true
+#   allow_gateway_transit        = false
+#   use_remote_gateways          = true
+#   depends_on                   = [
+#     module.connectivity_subscription, 
+#     module.management_subscription
+#   ]
+# }
 
-resource "azurerm_virtual_network_peering" "connectivity_hub-management_spoke-peer" {
-  name                         = "peer-connectivity-hub-management-spoke"
-  provider                     = azurerm.connectivity-sub
-  resource_group_name          = module.connectivity_subscription[0].resource_group_name
-  virtual_network_name         = module.connectivity_subscription[0].virtual_network_name
-  remote_virtual_network_id    = module.management_subscription[0].virtual_network_id
-  allow_virtual_network_access = true
-  allow_forwarded_traffic      = true
-  allow_gateway_transit        = true
-  use_remote_gateways          = false
-  depends_on                   = [ 
-    module.connectivity_subscription, 
-    module.management_subscription
-  ]
-}
+# resource "azurerm_virtual_network_peering" "connectivity_hub-management_spoke-peer" {
+#   name                         = "peer-connectivity-hub-management-spoke"
+#   provider                     = azurerm.connectivity-sub
+#   resource_group_name          = module.connectivity_subscription[0].resource_group_name
+#   virtual_network_name         = module.connectivity_subscription[0].virtual_network_name
+#   remote_virtual_network_id    = module.management_subscription[0].virtual_network_id
+#   allow_virtual_network_access = true
+#   allow_forwarded_traffic      = true
+#   allow_gateway_transit        = true
+#   use_remote_gateways          = false
+#   depends_on                   = [ 
+#     module.connectivity_subscription, 
+#     module.management_subscription
+#   ]
+# }

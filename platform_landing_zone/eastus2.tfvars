@@ -1,8 +1,8 @@
 
 #==[ TOGGLES ]=============================================================================================================================
 
-enable_connectivity_subscription  = true
-enable_identity_subscription      = true
+enable_connectivity_subscription  = false
+enable_identity_subscription      = false
 enable_management_subscription    = true
 
 #==[ RESOURCE CONVENTIONS ]================================================================================================================
