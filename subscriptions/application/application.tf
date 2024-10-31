@@ -134,7 +134,7 @@ variable "orgid" {}
 #==[ Resource Groups ]================================================================================================================================
 
 module "resource_group" {
-  source              = "../../../modules/resource_group"
+  source              = "../../modules/resource_group"
   resource_group_names= var.mgmt_rg_names
   location            = var.location
   orgid               = var.orgid
