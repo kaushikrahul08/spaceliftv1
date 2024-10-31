@@ -24,24 +24,24 @@ zones = [ "1", "2", "3" ]
 
 #==[ SECURITY CENTER / DEFENDER FOR CLOUD ]================================================================================================
 
-enable_defender_plan_for_arm                    = false
-enable_defender_plan_for_virtualmachines        = false
-enable_defender_plan_for_containerregistry      = false
-enable_defender_plan_for_keyvault               = false
-enable_defender_plan_for_kubernetes             = false
-enable_defender_plan_for_sqlserver              = false
-enable_defender_plan_for_sqlservervm            = false
-enable_defender_plan_for_storage                = false
-enable_defender_plan_for_dns                    = false
-enable_defender_plan_for_appServices            = false
-email                                           = "rahulsharma@teksystems.com"
-phone                                           = "000-000-0000"
-alert_notifications                             = true
-alerts_to_admins                                = false
-enable_vulnerability_assessment_auto_provision  = false
-enable_log_analytics_auto_provision             = false
-enable_guest_configuration_agent_auto_provision = false
-identity_type                                   = "SystemAssigned"
+# enable_defender_plan_for_arm                    = false
+# enable_defender_plan_for_virtualmachines        = false
+# enable_defender_plan_for_containerregistry      = false
+# enable_defender_plan_for_keyvault               = false
+# enable_defender_plan_for_kubernetes             = false
+# enable_defender_plan_for_sqlserver              = false
+# enable_defender_plan_for_sqlservervm            = false
+# enable_defender_plan_for_storage                = false
+# enable_defender_plan_for_dns                    = false
+# enable_defender_plan_for_appServices            = false
+# email                                           = "rahulsharma@teksystems.com"
+# phone                                           = "000-000-0000"
+# alert_notifications                             = true
+# alerts_to_admins                                = false
+# enable_vulnerability_assessment_auto_provision  = false
+# enable_log_analytics_auto_provision             = false
+# enable_guest_configuration_agent_auto_provision = false
+# identity_type                                   = "SystemAssigned"
 
 
 #==[ Global Peering ]====================================================================================================================
@@ -50,21 +50,21 @@ identity_type                                   = "SystemAssigned"
 #==[ VIRTUAL NETWORK AND SUBNET ADDRESSES ]================================================================================================
 
 # Connectivity Subscription
-connectivity_vnet_address_space         = ["10.20.0.0/24"]
-gateway_subnet_address_prefixes         = ["10.20.0.0/27"]
-firewall_subnet_address_prefixes        = ["10.20.0.64/26"]
-azbastion_subnet_address_prefixes       = ["10.20.0.128/26"]
-firewall_mgmt_subnet_address_prefixes   = ["10.20.0.192/26"]
+# connectivity_vnet_address_space         = ["10.20.0.0/24"]
+# gateway_subnet_address_prefixes         = ["10.20.0.0/27"]
+# firewall_subnet_address_prefixes        = ["10.20.0.64/26"]
+# azbastion_subnet_address_prefixes       = ["10.20.0.128/26"]
+# firewall_mgmt_subnet_address_prefixes   = ["10.20.0.192/26"]
 
 #On-prem
-local_gtwy_pip = "205.170.185.82"
-local_gtwy_cidr = ["172.25.84.0/22"]
+# local_gtwy_pip = "205.170.185.82"
+# local_gtwy_cidr = ["172.25.84.0/22"]
 
 
-# Identity Subscription
-identity_vnet_address_space              = ["10.20.1.0/24"]
-iden_cmp_subnet_address_prefixes         = ["10.20.1.0/26"]
-iden_pvtlink_subnet_address_prefixes     = ["10.20.1.64/26"]
+# # Identity Subscription
+# identity_vnet_address_space              = ["10.20.1.0/24"]
+# iden_cmp_subnet_address_prefixes         = ["10.20.1.0/26"]
+# iden_pvtlink_subnet_address_prefixes     = ["10.20.1.64/26"]
 
 
 # Management Subscription
@@ -73,13 +73,13 @@ mgmt_cmp_subnet_address_prefixes          = ["10.20.2.0/26"]
 mgmt_pvtlink_subnet_address_prefixes      = ["10.20.2.64/26"]
 
 #Routes address 
-udr_internet = "0.0.0.0/0"
+# udr_internet = "0.0.0.0/0"
 
-udr_to_onprem_001 = "10.10.0.0/16"
-udr_to_onprem_002 = "10.50.0.0/16"
-udr_to_onprem_003 = "10.100.0.0/16"
-udr_to_onprem_004 = "10.200.0.0/16"
-udr_to_onprem_005 = "172.30.0.0/16"
+# udr_to_onprem_001 = "10.10.0.0/16"
+# udr_to_onprem_002 = "10.50.0.0/16"
+# udr_to_onprem_003 = "10.100.0.0/16"
+# udr_to_onprem_004 = "10.200.0.0/16"
+# udr_to_onprem_005 = "172.30.0.0/16"
 
 
 #==[ NETWORK SECURITY GROUP (NSG) RULES ]==================================================================================================
@@ -105,19 +105,6 @@ default_network_security_group_rules = {
 }
 #####VMs
 vm_username = "occadminvmuser"
-
-dc_vm_details  = {
-    "dceus01"  = {
-        workload        = "dc"
-        instance_number = "001"
-        zone            = "1"
-    },
-    "dceus02"  = {
-        workload        = "dc"
-        instance_number = "002"
-        zone            = "2"
-    }
-}
 
 mgmt_vm_details  = {
     "mgeus01"  = {

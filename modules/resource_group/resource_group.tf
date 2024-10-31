@@ -56,7 +56,7 @@ output "rg_name_subs" {
   value = element(
     flatten([
       for rg in azurerm_resource_group.resource_group : rg.name if
-      can (regex(".*(mgmt|conn|iden|log).*",rg.name))
+      can (regex(".*(mgmt|conn|iden|log|app).*",rg.name))
     ]),
     0
   )

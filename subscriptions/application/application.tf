@@ -126,7 +126,7 @@ locals {
 }
 
 variable "mgmt_rg_names" {
-  default = ["vapp","shrd"]
+  default = ["app","shrd"]
 }
 variable "location_short_name" {}
 variable "orgid" {}
