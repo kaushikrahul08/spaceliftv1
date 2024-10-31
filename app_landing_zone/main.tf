@@ -36,13 +36,8 @@ variable "client_secret" {
 }
 
 # Subscription IDs
-variable "connectivity_subscription_id" {
-  description = "Connectivity Subscription ID"
-}
-variable "identity_subscription_id" {
-  description = "Identity Subscription ID"
-}
-variable "management_subscription_id" {
+
+variable "application_subscription_id" {
   description = "Management Subscription ID"
 }
 
@@ -52,6 +47,7 @@ variable "management_subscription_id" {
 # NOTE: these values are used to create names for resources and resource groups (please be mindful of character length limits)
 variable "application_name" {
   description = "Application or Service Name"
+  default = "test"
 
 }
 variable "subscription_type" {
@@ -76,34 +72,13 @@ variable "instance_number" {
 
 locals {
   subscription_types = {
-    connectivity  = "conn"
-    identity      = "iden"
-    management    = "mgmt"
+    application    = "app"
   }
 }
 
-#--[Firewall]
-
-# variable "application_rules" {
-#   description = "List of application rules for the firewall policy"
-#   type = list(object({
-#     name              = string
-#     priority          = number
-#     rule_name         = string
-#     source_addresses  = list(string)
-#     target_fqdns      = list(string)
-#   }))
-# }
-
 #--[ TOGGLES ]-----------------------------------------------------------------------------------------------------------------------------
 
-variable "enable_connectivity_subscription"  {
-  default = false 
-}
-variable "enable_identity_subscription"  {
-  default = false 
-}
-variable "enable_management_subscription"  {
+variable "enable_application_subscription"  {
   default = true 
 }
 
@@ -118,62 +93,13 @@ variable "zones" {
 }
 
 
-#--[ SECURITY CENTER / DEFENDER FOR CLOUD ]------------------------------------------------------------------------------------------------
-
-variable "enable_defender_plan_for_arm" {}
-variable "enable_defender_plan_for_appServices" {}
-variable "enable_defender_plan_for_virtualmachines" {}
-variable "enable_defender_plan_for_containerregistry" {}
-variable "enable_defender_plan_for_keyvault" {}
-variable "enable_defender_plan_for_kubernetes" {}
-variable "enable_defender_plan_for_sqlserver" {}
-variable "enable_defender_plan_for_sqlservervm" {}
-variable "enable_defender_plan_for_storage" {}
-variable "enable_defender_plan_for_dns" {}
-variable "email" {}
-variable "phone" {}
-variable "alert_notifications" {}
-variable "alerts_to_admins" {}
-variable "enable_vulnerability_assessment_auto_provision" {}
-variable "enable_guest_configuration_agent_auto_provision" {}
-variable "enable_log_analytics_auto_provision" {}
-variable "identity_type" {}
-variable "local_gtwy_pip" {}
-variable "local_gtwy_cidr" {}
-variable "gtwy_shared_key" {}
 
 #--[ VIRTUAL NETWORK AND SUBNET ADDRESSES ]------------------------------------------------------------------------------------------------
-
-# Connectivity
-variable "connectivity_vnet_address_space" {}
-variable "gateway_subnet_address_prefixes" {}
-variable "firewall_subnet_address_prefixes" {}
-variable "azbastion_subnet_address_prefixes" {}
-variable "firewall_mgmt_subnet_address_prefixes" {}
-
-# Identity
-variable "identity_vnet_address_space" {}
-variable "iden_cmp_subnet_address_prefixes" {}
-variable "iden_pvtlink_subnet_address_prefixes" {}
-
 
 # Management
 variable "management_vnet_address_space" {}
 variable "mgmt_cmp_subnet_address_prefixes" {}
 variable "mgmt_pvtlink_subnet_address_prefixes" {}
-
-#Shared by Subs
-variable "location_short_name" {}
-variable "orgid" {}
-
-
-#Routes
-variable "udr_internet" {}
-variable "udr_to_onprem_001" {}
-variable "udr_to_onprem_002" {}
-variable "udr_to_onprem_003" {}
-variable "udr_to_onprem_004" {}
-variable "udr_to_onprem_005" {}
 
 
 #--[ NETWORK SECURITY GROUP (NSG) RULES ]--------------------------------------------------------------------------------------------------
@@ -196,19 +122,6 @@ variable "vm_username" {
 
 variable "vm_size" {}
 
-variable "vm_admin_password" {
-  type        = string
-  description = "Password for DC Virtual Machines"
-}
-
-variable "dc_vm_details" {
-  type = map(object({
-    workload = string
-    instance_number = string
-    zone = string
-  }))
-  
-}
 
 variable "mgmt_vm_details" {
   type = map(object({
@@ -218,6 +131,8 @@ variable "mgmt_vm_details" {
   }))
   
 }
+variable "location_short_name" {}
+variable "orgid" {}
 
 
 
@@ -225,8 +140,8 @@ variable "mgmt_vm_details" {
 
 # Management Subscription
 provider "azurerm" {
-  alias           = "management-sub"
-  subscription_id = var.management_subscription_id
+  alias           = "application-sub"
+  subscription_id = var.application_subscription_id
   tenant_id       = var.tenant_id
   client_id       = var.client_id
   features {
@@ -243,30 +158,27 @@ provider "azurerm" {
 
 module "management_subscription" {
   providers = {
-    azurerm = azurerm.management-sub
+    azurerm = azurerm.application-sub
   }
-    source                                = "./subscriptions/management"
-    count                                 = var.enable_management_subscription == true ? 1 : 0
+    source                                = "./subscriptions/application"
+    count                                 = var.enable_application_subscription == true ? 1 : 0
     application_name                      = var.application_name
-    subscription_type                     = local.subscription_types.management
+    subscription_type                     = local.subscription_types.application
     environment                           = var.environment
     location                              = var.location
     instance_number                       = var.instance_number
     tenant_id                             = var.tenant_id
     client_id                             = var.client_id
     client_secret                         = var.client_secret
-    email                                 = var.email
-    phone                                 = var.phone
     management_vnet_address_space         = var.management_vnet_address_space
     mgmt_pvtlink_subnet_address_prefixes  = var.mgmt_pvtlink_subnet_address_prefixes
     mgmt_cmp_subnet_address_prefixes      = var.mgmt_cmp_subnet_address_prefixes
-    log_analytics_workspace_id            = module.management_subscription[0].log_analytics_workspace_id
     location_short_name                   = var.location_short_name
     orgid                                 = var.orgid
     mgmt_vm_details               = var.mgmt_vm_details
     vm_size                     = var.vm_size
     vm_username                 = var.vm_username
-    vm_admin_password           = var.vm_admin_password
+
 
 }
 

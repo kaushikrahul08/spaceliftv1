@@ -1,9 +1,6 @@
 
 #==[ TOGGLES ]=============================================================================================================================
 
-enable_connectivity_subscription  = false
-enable_identity_subscription      = false
-enable_management_subscription    = true
 
 #==[ RESOURCE CONVENTIONS ]================================================================================================================
 
@@ -130,3 +127,7 @@ mgmt_vm_details  = {
     }
 
     }
+application_subscription_id = "bebb6b61-5ac1-4f45-9e8d-b64f895f94e9"
+client_id = "bc3d7c17-445e-49f8-84a9-9098f0e5d342"
+client_secret = ""
+tenant_id = "4863756e-7cb1-42c5-8f96-ca06fff29f9b"
