@@ -131,9 +131,17 @@ variable "mgmt_rg_names" {
 variable "location_short_name" {}
 variable "orgid" {}
 
+variable "enable_rg" {
+  type        = bool
+  description = "Controls the deployment of the Rgs and its supporting infrastructure"
+  default     = false
+}
+
+
 #==[ Resource Groups ]================================================================================================================================
 
 module "resource_group" {
+  count               = var.enable_rg == true ? 1 : 0
   source              = "../../modules/resource_group"
   resource_group_names= var.mgmt_rg_names
   location            = var.location
