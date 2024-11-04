@@ -129,7 +129,7 @@ variable "orgid" {}
 variable "enable_rg" {
   type        = bool
   description = "Controls the deployment of the Rgs and its supporting infrastructure"
-  default     = false
+  default     = true
 }
 
 
