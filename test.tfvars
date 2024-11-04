@@ -8,8 +8,8 @@
 # NOTE: these values are used to create names for resources and resource groups (please be mindful of character length limits)
 application_name    = "lz"
 subscription_type   = "shared"
-environment         = "prd"
-location            = "eastus2"
+environment         = "tst"
+#location            = "eastus2"
 instance_number     = "001"
 vm_size             = "Standard_D2ds_v5"
 
