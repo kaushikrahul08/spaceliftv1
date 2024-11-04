@@ -19,13 +19,8 @@ terraform {
 variable "tenant_id" {
   description = "Tenant ID"
 }
-
-# Service Principle (SPN) ID and Secret
 variable "client_id" {
   description = "Client ID"
-}
-variable "client_secret" {
-  description = "Client Secret"
 }
 
 
@@ -86,9 +81,9 @@ variable "vm_size" {}
 
 #--[ VIRTUAL NETWORK AND SUBNET ADDRESSES ]------------------------------------------------------------------------------------------------
 
-variable "management_vnet_address_space" {}
-variable "mgmt_cmp_subnet_address_prefixes" {}
-variable "mgmt_pvtlink_subnet_address_prefixes" {}
+variable "app_vnet_address_space" {}
+variable "app_cmp_subnet_address_prefixes" {}
+variable "app_pvtlink_subnet_address_prefixes" {}
 
 #==[ DATA ]================================================================================================================================
 
@@ -116,12 +111,12 @@ locals {
   }
 
   tags = {
-    ApplicationName              = "Landing Zone"
-    BusinessUnit                 = "IT"
+    ApplicationName              = "App Landing Zone"
+    BusinessUnit                 = "App"
     Environment                  = "${var.environment}"
-    Owner                        = "IT Department"
+    Owner                        = "App Department"
     CreatedOn                    = formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())
-    CreatedBy                    = "Terraform SPN"
+    CreatedBy                    = "Spacelift Stack_${var.environment}"
 }
 }
 

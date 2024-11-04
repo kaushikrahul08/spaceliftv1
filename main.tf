@@ -31,9 +31,7 @@ variable "tenant_id" {
 variable "client_id" {
   description = "Client ID"
 }
-variable "client_secret" {
-  description = "Client Secret"
-}
+
 
 # Subscription IDs
 
@@ -96,10 +94,10 @@ variable "zones" {
 
 #--[ VIRTUAL NETWORK AND SUBNET ADDRESSES ]------------------------------------------------------------------------------------------------
 
-# Management
-variable "management_vnet_address_space" {}
-variable "mgmt_cmp_subnet_address_prefixes" {}
-variable "mgmt_pvtlink_subnet_address_prefixes" {}
+# Application 01
+variable "app_vnet_address_space" {}
+variable "app_cmp_subnet_address_prefixes" {}
+variable "app_pvtlink_subnet_address_prefixes" {}
 
 
 #--[ NETWORK SECURITY GROUP (NSG) RULES ]--------------------------------------------------------------------------------------------------
@@ -153,10 +151,9 @@ provider "azurerm" {
 
 #==[ SUBSCRIPTION MODULES ]================================================================================================================
 
-#--[ MANAGEMENT ]--------------------------------------------------------------------------------------------------------------------------
-# NOTE: Management Subscription exports/outputs a Log Analytics Workspace used by all other subscriptions
+#--[ Application <01> ]--------------------------------------------------------------------------------------------------------------------------
 
-module "management_subscription" {
+module "application_subscription" {
   providers = {
     azurerm = azurerm.application-sub
   }
@@ -169,15 +166,14 @@ module "management_subscription" {
     instance_number                       = var.instance_number
     tenant_id                             = var.tenant_id
     client_id                             = var.client_id
-    client_secret                         = var.client_secret
-    management_vnet_address_space         = var.management_vnet_address_space
-    mgmt_pvtlink_subnet_address_prefixes  = var.mgmt_pvtlink_subnet_address_prefixes
-    mgmt_cmp_subnet_address_prefixes      = var.mgmt_cmp_subnet_address_prefixes
+    app_vnet_address_space                = var.app_vnet_address_space
+    app_cmp_subnet_address_prefixes       = var.app_cmp_subnet_address_prefixes
+    app_pvtlink_subnet_address_prefixes   = var.app_pvtlink_subnet_address_prefixes
     location_short_name                   = var.location_short_name
     orgid                                 = var.orgid
-    mgmt_vm_details               = var.mgmt_vm_details
-    vm_size                     = var.vm_size
-    vm_username                 = var.vm_username
+    mgmt_vm_details                       = var.mgmt_vm_details
+    vm_size                               = var.vm_size
+    vm_username                           = var.vm_username
 
 
 }
