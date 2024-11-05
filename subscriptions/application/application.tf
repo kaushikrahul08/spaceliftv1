@@ -121,7 +121,7 @@ locals {
 }
 
 variable "mgmt_rg_names" {
-  default = ["mgmt","shrd"]
+  default = ["app","shrd"]
 }
 variable "location_short_name" {}
 variable "orgid" {}
@@ -129,7 +129,7 @@ variable "orgid" {}
 variable "enable_rg" {
   type        = bool
   description = "Controls the deployment of the Rgs and its supporting infrastructure"
-  default     = false
+  default     = true
 }
 
 
