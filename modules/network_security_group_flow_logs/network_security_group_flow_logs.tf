@@ -1,14 +1,13 @@
 # TODO: Bring this module up to the standards of the other modules
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.110.0"
-    }
-  }
-  required_version = ">= 1.1.0"
-}
-
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 3.110.0"
+#     }
+#   }
+#   required_version = ">= 1.1.0"
+# }
 # Service Abbreviation
 variable "abbreviation" {
   default = "nsgfl"

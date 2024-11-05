@@ -3,15 +3,15 @@ variable "subscription_id" {}
 variable "location" {}
 variable "tags" {}
 
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.110.0"
-    }
-  }
-  required_version = ">= 1.1.0"
-}
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 3.110.0"
+#     }
+#   }
+#   required_version = ">= 1.1.0"
+# }
 
 locals {
   subscription = "/subscriptions/${var.subscription_id}"
@@ -48,6 +48,8 @@ resource "azurerm_monitor_activity_log_alert" "nsg_delete_activity_log_alerts" {
   scopes              = [local.subscription]
   description         = "This alert will monitor nsg delete updates."
   enabled             = false
+  location            = var.location
+
 
   criteria {
     resource_type  = "Microsoft.Network/networksecuritygroups"
@@ -62,6 +64,7 @@ resource "azurerm_monitor_activity_log_alert" "nsg_join_activity_log_alerts" {
   scopes              = [local.subscription]
   description         = "This alert will monitor nsg join updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/networksecuritygroups"
@@ -77,6 +80,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_write_activity_log_alerts" 
   scopes              = [local.subscription]
   description         = "This alert will monitor application gateway write updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -91,6 +95,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_delete_activity_log_alerts"
   scopes              = [local.subscription]
   description         = "This alert will monitor application gateway delete updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -105,6 +110,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_get_behealth_activity_log_a
   scopes              = [local.subscription]
   description         = "This alert will get backend health updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -119,6 +125,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_get_ondemand_behealth_activ
   scopes              = [local.subscription]
   description         = "This alert will get on demand backend health updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -133,6 +140,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_get_route_table_activity_lo
   scopes              = [local.subscription]
   description         = "This alert will get route table updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -147,6 +155,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_get_nsg_activity_log_alerts
   scopes              = [local.subscription]
   description         = "This alert will get effective Network Security Groups updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -161,6 +170,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_get_migrationstatus_activit
   scopes              = [local.subscription]
   description         = "This alert will get migration status updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -175,6 +185,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_migrateV1ToV2_activity_log_
   scopes              = [local.subscription]
   description         = "This alert will get migration from V1 to V2 updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -189,6 +200,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_resolvePrivateLinkServiceId
   scopes              = [local.subscription]
   description         = "This alert will get Resolve Private Link Service ID updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -203,6 +215,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_restart_activity_log_alerts
   scopes              = [local.subscription]
   description         = "This alert will get restart updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -217,6 +230,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_setSecurityCenterConfigurat
   scopes              = [local.subscription]
   description         = "This alert will get Security Center Configuration updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -231,6 +245,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_start_activity_log_alerts" 
   scopes              = [local.subscription]
   description         = "This alert will get application Gateways start updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -245,6 +260,7 @@ resource "azurerm_monitor_activity_log_alert" "appgw_stop_activity_log_alerts" {
   scopes              = [local.subscription]
   description         = "This alert will get application Gateways stop updates."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.Network/applicationgateways"
@@ -261,6 +277,7 @@ resource "azurerm_monitor_activity_log_alert" "keyvault_joinPerimeter_log_alerts
   scopes              = [local.subscription]
   description         = "This alert will monitor join Perimeter actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.KeyVault/vaults"
@@ -275,6 +292,7 @@ resource "azurerm_monitor_activity_log_alert" "keyvault_PrivateEndpointConnectio
   scopes              = [local.subscription]
   description         = "This alert will monitor Private Endpoint Connections Approval actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.KeyVault/vaults"
@@ -289,6 +307,7 @@ resource "azurerm_monitor_activity_log_alert" "keyvault_delete_log_alerts" {
   scopes              = [local.subscription]
   description         = "This alert will monitor delete actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.KeyVault/vaults"
@@ -303,6 +322,7 @@ resource "azurerm_monitor_activity_log_alert" "keyvault_write_activity_log_alert
   scopes              = [local.subscription]
   description         = "This alert will monitor write actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.KeyVault/vaults"
@@ -317,6 +337,7 @@ resource "azurerm_monitor_activity_log_alert" "keyvault_deploy_activity_log_aler
   scopes              = [local.subscription]
   description         = "This alert will monitor deploy actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.KeyVault/vaults"
@@ -333,6 +354,7 @@ resource "azurerm_monitor_activity_log_alert" "law_write_log_alerts" {
   scopes              = [local.subscription]
   description         = "This alert will monitor write actions."
   enabled             = false
+  location            = var.location
 
   criteria {
     resource_type  = "Microsoft.OperationalInsights/workspaces"

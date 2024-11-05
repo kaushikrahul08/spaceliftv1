@@ -1,13 +1,12 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.110.0"
-    }
-  }
-  required_version = ">= 1.1.0"
-}
-
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 3.110.0"
+#     }
+#   }
+#   required_version = ">= 1.1.0"
+# }
 
 # TODO: Bring this module up to standards of the other modules
 variable "log_analytics_workspace_resource_group_name" {}

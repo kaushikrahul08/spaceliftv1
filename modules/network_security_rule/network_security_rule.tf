@@ -1,13 +1,12 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.110.0"
-    }
-  }
-  required_version = ">= 1.1.0"
-}
-
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 3.110.0"
+#     }
+#   }
+#   required_version = ">= 1.1.0"
+# }
 # NOTE: Network Security Group Rules do not have a resource name, so the naming conventions and name_overrides are unnecessary
 # # Service Abbreviations
 # variable "abbreviation" {
