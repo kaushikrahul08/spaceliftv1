@@ -1,21 +1,21 @@
 #==[ REQUIRED PROVIDERS ]==================================================================================================================
 
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~> 3.110.0"
-    }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 2.15.0"
-    }
-  }
+# terraform {
+#   required_providers {
+#     azurerm = {
+#       source  = "hashicorp/azurerm"
+#       version = "~> 3.110.0"
+#     }
+#     azuread = {
+#       source  = "hashicorp/azuread"
+#       version = "~> 2.15.0"
+#     }
+#   }
 
   # Comment out this backend for local deployments using PowerShell/VSCODE, leave it uncommented for use with Azure DevOps (ADO) pipelines
 
-  required_version = ">= 1.1.0"
-}
+#   required_version = ">= 1.1.0"
+# }
 
 
 #==[ VARIABLES ]===========================================================================================================================
