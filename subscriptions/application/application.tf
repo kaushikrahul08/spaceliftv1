@@ -129,7 +129,7 @@ variable "orgid" {}
 variable "enable_rg" {
   type        = bool
   description = "Controls the deployment of the Rgs and its supporting infrastructure"
-  default     = true
+  default     = false
 }
 
 
@@ -150,18 +150,18 @@ module "resource_group" {
 
 # # #--[ VIRTUAL NETWORK (VNET) ]--------------------------------------------------------------------------------------------------------------
 
-module "virtual_network" {
-  source              = "../../modules/virtual_network"
-  resource_group_name = module.resource_group[0].rg_name_subs
-  location            = var.location
-  orgid               = var.orgid
-  environment         = var.environment
-  instance_number     = var.instance_number
-  location_short_name = var.location_short_name                        
-  tags                = local.tags
-  workload            = local.application_names.workload_type
-  address_space       = var.app_vnet_address_space
-}
+# module "virtual_network" {
+#   source              = "../../modules/virtual_network"
+#   resource_group_name = module.resource_group[0].rg_name_subs
+#   location            = var.location
+#   orgid               = var.orgid
+#   environment         = var.environment
+#   instance_number     = var.instance_number
+#   location_short_name = var.location_short_name                        
+#   tags                = local.tags
+#   workload            = local.application_names.workload_type
+#   address_space       = var.app_vnet_address_space
+# }
 
 
 # # #--[ SUBNETs (SUBNET) ]--------------------------------------------------------------------------------------------------------------
