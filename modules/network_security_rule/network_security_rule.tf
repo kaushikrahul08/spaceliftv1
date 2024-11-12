@@ -1,39 +1,4 @@
-# terraform {
-#   required_providers {
-#     azurerm = {
-#       source  = "hashicorp/azurerm"
-#       version = "~> 3.110.0"
-#     }
-#   }
-#   required_version = ">= 1.1.0"
-# }
-# NOTE: Network Security Group Rules do not have a resource name, so the naming conventions and name_overrides are unnecessary
-# # Service Abbreviations
-# variable "abbreviation" {
-#   default = "nsgsr"
-# }
 
-# # Naming Conventions
-# variable "application_name" {
-#   default = ""
-# }
-# variable "subscription_type" {
-#   default = ""
-# }
-# variable "environment" {
-#   default = ""
-# }
-# variable "location" {
-#   default = ""
-# }
-# variable "instance_number" {
-#   default = ""
-# }
-
-# # Overrides
-# variable "name_override" {
-#   default = ""
-# }
 
 # Required
 variable "resource_group_name" {}
@@ -43,8 +8,6 @@ variable "network_security_group_rules" {
 }
 
 # Create a Network Security Group Rule
-#   Name format (scope: resource group, characters: 1-80 [alphanumeric, _, ., -]):
-#     "<abbreviation>-<application_name>-<subscription_type>-<environment>-<location>-<instance_number>"
 resource "azurerm_network_security_rule" "network_security_group_rule" {
   for_each                     = var.network_security_group_rules
   # required

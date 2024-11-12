@@ -1,4 +1,3 @@
-# TODO: bring this module up to par with the rest of the modules
 
 variable "resource_group_name" {}
 

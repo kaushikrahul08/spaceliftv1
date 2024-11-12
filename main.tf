@@ -1,4 +1,4 @@
-#==[ REQUIRED PROVIDERS ]==================================================================================================================
+#[ REQUIRED PROVIDERS ]==================================================================================================================
 
 # terraform {
 #   required_providers {
@@ -11,8 +11,6 @@
 #       version = "~> 2.15.0"
 #     }
 #   }
-
-  # Comment out this backend for local deployments using PowerShell/VSCODE, leave it uncommented for use with Azure DevOps (ADO) pipelines
 
 #   required_version = ">= 1.1.0"
 # }
@@ -32,11 +30,10 @@ variable "client_id" {
   description = "Client ID"
 }
 
-
 # Subscription IDs
 
 variable "application_subscription_id" {
-  description = "Management Subscription ID"
+  description = "Application Subscription ID"
 }
 
 #--[ RESOURCE CONVENTIONS ]----------------------------------------------------------------------------------------------------------------
@@ -45,15 +42,17 @@ variable "application_subscription_id" {
 # NOTE: these values are used to create names for resources and resource groups (please be mindful of character length limits)
 variable "application_name" {
   description = "Application or Service Name"
-  default = "test"
+  default = "lux"
 
 }
+
 variable "subscription_type" {
-  description = "Subscription Type: conn (connectivity), id (identity), mgmt (management)"
-  default     = "shared"
+  description = "Subscription Type: app (Application), conn (connectivity), dt (devtest), id (identity), mgmt (management), prod (production)"
+  default     = "app"
 }
+
 variable "environment" {
-  description = "Environment: dev, test, prod"
+  description = "Environment: dev, test, qa,prod"
 
 }
 variable "location" {
@@ -106,7 +105,7 @@ variable "app_pvtlink_subnet_address_prefixes" {}
 variable "default_network_security_group_rules" {}
 
 
-#--[ JUMPBOX / VM ]------------------------------------------------------------------------------------------------------------------------
+#--[ Virtual Machine]--------------------------------------------------------------------------------------------------------
 
 variable "enable_jumpbox" {
   type        = bool
@@ -119,9 +118,9 @@ variable "vm_username" {
 }
 
 variable "vm_size" {}
+variable "vm_admin_password" {}
 
-
-variable "mgmt_vm_details" {
+variable "app_vm_details" {
   type = map(object({
     workload = string
     instance_number = string
@@ -171,10 +170,10 @@ module "application_subscription" {
     app_pvtlink_subnet_address_prefixes   = var.app_pvtlink_subnet_address_prefixes
     location_short_name                   = var.location_short_name
     orgid                                 = var.orgid
-    mgmt_vm_details                       = var.mgmt_vm_details
+    app_vm_details                        = var.app_vm_details
     vm_size                               = var.vm_size
     vm_username                           = var.vm_username
-
+    vm_admin_password                     = var.vm_admin_password
 
 }
 
