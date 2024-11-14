@@ -1,88 +1,88 @@
-
-################################################################################
-## HELPERS
-################################################################################
 locals {
-
-  github_variables = tomap({
-    for y in flatten([
-      for x in data.github_actions_variables.current.variables : {
-        name       = x.name
-        created_at = x.created_at
-        updated_at = x.updated_at
-        value      = x.value
-      }
-    ]) : y.name => y
-  })
-
-  app_envs = { for x in flatten([
-    for app_key, app in local.applications : [
-      for env_key, env in app.environments : merge(local.defaults.applications, app, env, {
-        app             = app_key
-        env             = env_key
-        environments    = null
-        name            = null
-        subscriptions   = null
-        app_name        = app.name
-        mg_name         = "${app_key}-${local.environments[env_key].name}"
-        mg_display_name = local.environments[env_key].name
-      })
-    ]
-  ]) : "${x.app}-${x.env}" => x }
-
-  app_env_subs = { for x in flatten([
-    for app_key, app in local.applications : [
-      for env_key, env in app.environments : [
-        for sub_key, sub in env.subscriptions : merge(local.defaults.applications, app, env, local.flat_regions[sub.region], sub, {
-          app                 = app_key
-          env                 = env_key
-          sub                 = sub_key
-          environments        = null
-          name                = null
-          subscriptions       = null
-          subscription_name   = try(sub.subscription_name, "${app_key}-${env_key}-${sub_key}")
-          vwan_peering_name   = "${local.flat_regions[sub.region].vwan_hub_name}-to-${app_key}-${env_key}-${sub_key}"
-          github_environment  = try(sub.github_environment, "${app_key}-${env_key}-${sub_key}")
-          mg_key              = "${app_key}-${env_key}"
-          app_reg_name_admin  = try(sub.app_reg_name_admin, "inf-${app_key}-${env_key}-${sub_key}-admin")
-          app_reg_name_deploy = try(sub.app_reg_name_deploy, "inf-${app_key}-${env_key}-${sub_key}-deploy")
+  ###############################################################################################################################
+  # ALL STAMPS, FLATTENED
+  ###############################################################################################################################
+  reg_env_stamps_all = { for x in flatten([
+    for region_key, region in local.regions_manifest : [
+      for environment_key, environment in region.environments : [
+        for stamp_key, stamp in environment.stamps : merge(local.regions_defaults, region, environment, stamp, {
+          app_region      = region_key
+          app_environment = environment_key
+          stamp_index     = stamp_key
+          environments    = null
+          stamps          = null
+          regions         = null
         })
       ]
     ]
-  ]) : "${x.app}-${x.env}-${x.sub}" => x }
+  ]) : "${x.app_region}_${x.app_environment}_${x.stamp_index}" => x }
 
-  flat_regions = { for x in flatten([
-    for geok, geo in local.geographies : [
-      for regionk, region in geo.regions : merge(region, {
-        geography_name = geo.name
-        geography_key  = geok
-        region         = regionk
+  ###############################################################################################################################
+  # REGION TO BE PROVISIONED AS PART OF THE CURRENT DEPLOYMENT, FLATTENED
+  ###############################################################################################################################
+  region = { for x in flatten([
+    for region_key, region in local.regions_manifest : [
+      for environment_key, environment in region.environments : merge(local.regions_defaults, region, environment, {
+        app_region                           = region_key
+        app_environment                      = environment_key
+        environments                         = null
+        regions                              = null
+        stamps                               = null
+        agw_request_timeout                  = null
+        agw_sku_capacity                     = null
+        agw_sku_name                         = null
+        agw_sku_tier                         = null
+        agw_zones                            = null
+        asp_os_type                          = null
+        asp_zone_balancing_enabled           = null
+        sqlmi_backup_delete_retention_policy = null
+        sqlmi_backupstorage                  = null
+        sqlmi_iszoneredundant                = null
+        sqlmi_licensetype                    = null
+        sqlmi_maintenance_configuration_name = null
+        sqlmi_sku_name                       = null
       })
     ]
-  ]) : x.region => x }
+  ]) : "${x.app_region}_${x.app_environment}" => x }["${var.APP_REGION}_${var.APP_ENVIRONMENT}"]
 
-  app_dns_zones = { for x in flatten([
-    for appk, appv in local.applications : [
-      for zonek, zonev in try(appv.dns_zones, {}) : {
-        key            = "${appk}_${zonek}"
-        repo_name      = appv.repo_name
-        variable_name  = upper("TF_VAR_DNS_ZONE_${zonek}")
-        variable_value = zonev
-        pipeline       = appv.pipeline
-      }
+  ###############################################################################################################################
+  # ALL EMS CUSTOMERS TO BE PROVISIONED AS PART OF THE CURRENT DEPLOYMENT, FLATTENED
+  ###############################################################################################################################
+  all_customers = flatten([
+    for customer, env in local.customers_manifest : [
+      for env_k, env_v in env : customer if(env_k == var.APP_ENVIRONMENT && env_v.region == var.APP_REGION)
     ]
-  ]) : x.key => x }
+  ])
 
-  app_repo_variables = { for x in flatten([
-    for appk, appv in local.applications : [
-      for vark, varv in try(appv.repo_github_variables, {}) : {
-        key            = "${appk}_${vark}"
-        repo_name      = appv.repo_name
-        variable_name  = upper(vark)
-        variable_value = varv
-        pipeline       = appv.pipeline
-      }
+
+  ###############################################################################################################################
+  # ALL EMS CUSTOMERS_STAMP TO BE PROVISIONED AS PART OF THE CURRENT DEPLOYMENT, FLATTENED
+  ###############################################################################################################################
+  customers_stamp = flatten([
+    for customer, env in local.customers_manifest : [
+      for env_k, env_v in env : "${customer}_${env_v.region}_${env_v.stamp}" if(env_k == var.APP_ENVIRONMENT && env_v.region == var.APP_REGION)
     ]
-  ]) : x.key => x }
+  ])
 
+  ###############################################################################################################################
+  # ALL STAMPS TO BE PROVISIONED AS PART OF THE CURRENT DEPLOYMENT
+  ###############################################################################################################################
+  stamps = {
+    for stamp_k, stamp_v in local.reg_env_stamps_all : stamp_v.stamp_index => stamp_v if(stamp_v.app_environment == var.APP_ENVIRONMENT && stamp_v.app_region == var.APP_REGION)
+  }
+
+  ###############################################################################################################################
+  # EXTRACT ENTRA ID GROUP NAME AND ID FROM JSON VARIABLE
+  ###############################################################################################################################
+  groups = jsondecode(var.GROUPS)
+
+  ###############################################################################################################################
+  # EXTRACT SQLMI_PR_PARTNER_ID
+  ###############################################################################################################################
+  sqlmi_pr_partner_id = try(jsondecode(var.SQLMI_PR_PARTNER_ID), {})
+
+  ###############################################################################################################################
+  # EXTRACT SSQLMI_DR_PARTNER_ID"
+  ###############################################################################################################################
+  sqlmi_dr_partner_id = try(jsondecode(var.SQLMI_DR_PARTNER_ID), {})
 }
