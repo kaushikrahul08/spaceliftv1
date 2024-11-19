@@ -1,7 +1,5 @@
 
-variable "resource_type" {
-  default = "vm"
-}
+variable "vm_name" {}
 
 variable "vm_size" {
   type = string
@@ -40,8 +38,8 @@ variable "vm_details" {
 variable "abbreviation" {
   default = "vm"
 }
-variable "orgid" {}
-variable "location_short_name" {}
+variable "nic_name" {}
+variable "nic_ip_config_name" {}
 variable "environment" {}
 variable "resource_group_name" {}
 
@@ -50,13 +48,13 @@ variable "resource_group_name" {}
 #   Name format (scope: resource group, characters: 2-64 [alphanumerics, _, ., -]): 
 resource "azurerm_network_interface" "nic" {
     for_each = var.vm_details
-    name                  = "nic${var.orgid}${each.value.workload}${var.environment}${var.location_short_name}${each.value.instance_number}"
+    name                  = var.nic_name
     resource_group_name   = var.resource_group_name
     location              = var.location
     tags                  = var.tags
     
     ip_configuration {
-        name = "ipc${var.orgid}${each.value.workload}${var.environment}${var.location_short_name}${each.value.instance_number}"
+        name = var.nic_ip_config_name
         private_ip_address_allocation= "Dynamic"
         subnet_id = var.subnet_id
     }
@@ -70,7 +68,7 @@ resource "azurerm_network_interface" "nic" {
 
 resource "azurerm_windows_virtual_machine" "vm" {
   for_each = var.vm_details
-  name                    = "vm${var.orgid}${each.value.workload}${each.value.instance_number}"
+  name                    = var.vm_name
   resource_group_name     = var.resource_group_name
   location                = var.location
   size                    = var.vm_size
@@ -81,7 +79,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   patch_mode              = "AutomaticByPlatform" # Optional 
 
   os_disk {
-      name                  = "osd${var.orgid}${each.value.workload}${var.environment}${var.location_short_name}${each.value.instance_number}"
+      name                  = "osd${var.vm_name}"
       caching               = "ReadWrite"
       storage_account_type  = "Premium_LRS"
     }

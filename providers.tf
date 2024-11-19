@@ -31,6 +31,7 @@ terraform {
     }
   }
 }
+
 provider "azurerm" {
   features {
     resource_group {
@@ -38,28 +39,28 @@ provider "azurerm" {
     }
   }
 }
-provider "azurerm" {
-  subscription_id = local.ops_subscription_id
-  alias           = "ops"
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = true
-    }
-  }
-}
-provider "azurerm" {
-  subscription_id = local.connectivity_subscription_id
-  alias           = "connectivity"
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = true
-    }
-  }
-}
+# provider "azurerm" {
+#   subscription_id = local.ops_subscription_id
+#   alias           = "ops"
+#   features {
+#     resource_group {
+#       prevent_deletion_if_contains_resources = true
+#     }
+#   }
+# }
+# provider "azurerm" {
+#   subscription_id = local.connectivity_subscription_id
+#   alias           = "connectivity"
+#   features {
+#     resource_group {
+#       prevent_deletion_if_contains_resources = true
+#     }
+#   }
+# }
 
 
 ## RPS set to 3 to reduce rateLimtiing (Default 4)
 provider "cloudflare" {
-  rps = 3
+  #rps = 3
 }
 

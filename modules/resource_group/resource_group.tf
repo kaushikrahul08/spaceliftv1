@@ -1,30 +1,17 @@
 
 # Service Abbreviation
-variable "abbreviation" {
-  default = "rg"
-}
-
-variable "orgid" {}
-variable "environment" {}
-variable "location_short_name" {}
-variable "instance_number" {}
-
 variable "location" {
   default = ""
 }
 
-variable "resource_group_names" {
-  type = list(string)
-}
+variable "rg_name" {}
 
 # Optional
 variable "tags" {}
 
 # Create a Resource Group
-#{abv}{org}{workload}{env}{abv-region}{###}
 resource "azurerm_resource_group" "resource_group" {
-  for_each = toset(var.resource_group_names)
-  name     = "${var.abbreviation}${var.orgid}${each.key}${var.environment}${var.location_short_name}${var.instance_number}"
+  name     = var.rg_name
   location = var.location
   tags     = var.tags
 

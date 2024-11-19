@@ -22,10 +22,7 @@ variable "instance_number" {
 variable "name_override" {
   default = ""
 }
-variable "orgid" {}
-variable "location_short_name" {}
-variable "workload" {}
-
+variable "vnet_name" {}
 # Required
 variable "resource_group_name" {
   default = ""
@@ -54,7 +51,7 @@ variable "tags" {}
 #   Name format (scope: resource group, characters: 2-64 [alphanumerics, _, ., -]): 
 resource "azurerm_virtual_network" "virtual_network" {
   # required
-  name                    = "${var.abbreviation}${var.orgid}${var.workload}${var.environment}${var.location_short_name}${var.instance_number}"
+  name                    = var.vnet_name
   resource_group_name     = var.resource_group_name
   location                = var.location
   address_space           = var.address_space

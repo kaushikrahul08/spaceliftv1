@@ -1,35 +1,10 @@
 
 # Service Abbreviations
-variable "abbreviation" {
-  type    = string
-  default = "bas"
-}
-variable "ip_configuration_abbreviation" {
-  type    = string
-  default = "ipconf-bas"
-}
-
-# Naming Conventions
-variable "application_name" {
-  default = ""
-}
-variable "subscription_type" {
-  default = ""
-}
-variable "environment" {
-  default = ""
-}
 variable "location" {
   default = ""
 }
-variable "instance_number" {
-  default = ""
-}
-variable "orgid" {}
-variable "location_short_name" {}
-variable "workload" {}
-
-variable "ip_configuration_name_override" {
+variable "bastion_host_name" {}
+variable "bastion_ip_configuration_name" {
   default = null
 }
 
@@ -76,7 +51,7 @@ variable "tags" {}
 #   Name format (scope: Resource Group, characters: 1-80 characters [alphanumeric, _, ., -]):
 resource "azurerm_bastion_host" "bastion_host" {
   # required
-  name                    = "${var.abbreviation}${var.orgid}${var.workload}${var.environment}${var.location_short_name}${var.instance_number}"
+  name                    = var.bastion_host_name
   resource_group_name     = var.resource_group_name
   location                = var.location
   # optional
@@ -85,7 +60,7 @@ resource "azurerm_bastion_host" "bastion_host" {
   # required
   ip_configuration {
     # required
-    name                 = var.ip_configuration_name_override != null ? var.ip_configuration_name_override : "${var.ip_configuration_abbreviation}-${var.application_name}-${var.subscription_type}-${var.environment}-${var.location}-${var.instance_number}"
+    name                 = var.bastion_ip_configuration_name
     subnet_id            = var.ip_configuration_subnet_id
     public_ip_address_id = var.ip_configuration_public_ip_address_id
   }

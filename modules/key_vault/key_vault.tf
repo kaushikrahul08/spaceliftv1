@@ -40,6 +40,7 @@ variable "location_short_name" {}
 variable "workload" {}
 variable "environment" {}
 variable "instance_number" {}
+variable "kv_name" {}
 
 
 # Get current client configuration from azurerm provider
@@ -49,7 +50,7 @@ data "azurerm_client_config" "current" {}
 #   Name format (scope: global, characters: 3-24 [alphanumerics, -]): 
 resource "azurerm_key_vault" "key_vault" {
   # required
-  name                            = "${var.abbreviation}${var.orgid}${var.workload}${var.environment}${var.location_short_name}${var.instance_number}"
+  name                            = var.kv_name
   location                        = var.location
   resource_group_name             = var.resource_group_name
   sku_name                        = var.sku_name
