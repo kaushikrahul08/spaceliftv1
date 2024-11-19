@@ -19,10 +19,10 @@ locals {
     tags = {
         ApplicationName              = "LucernexApp"
         BusinessUnit                 = "Accruent"
-        Environment                  = "${var.environment}"
+        Environment                  = "${var.ENVIRONMENT}"
         Owner                        = "App Department"
         CreatedOn                    = formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())
-        CreatedBy                    = "Spacelift Stack_${var.environment}"
+        CreatedBy                    = "Spacelift Stack_${var.ENVIRONMENT}"
     }
 }
 
