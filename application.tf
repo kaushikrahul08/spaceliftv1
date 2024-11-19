@@ -24,13 +24,11 @@ variable "subscription_type" {
   description = "Subscription Type: app (Application), conn (connectivity), dt (devtest), id (identity), mgmt (management), prod (production)"
   default     = "app"
 }
-variable "environment" {
+variable "ENVIRONMENT" {
   description = "Environment: dev, qa,test, prod,hub,spoke,stage"
-  default     = "dev"
 }
-variable "location" {
+variable "LOCATION" {
   description = "Azure Location (see: https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/#overview)"
-  default     = "eastus"
 }
 variable "instance_number" {
   description = "Instance Number: 001, 002, ..., 998, 999"
@@ -103,6 +101,6 @@ data "azurerm_subscription" "current" {}
 module "resource_group" {
   source               = "./modules/resource_group"
   rg_name              = module.naming.rg_name_patterns[0]
-  location             = var.location                 
+  location             = var.LOCATION                 
   tags                 = local.tags
 }

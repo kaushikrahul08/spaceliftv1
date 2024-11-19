@@ -19,19 +19,19 @@ locals {
     tags = {
         ApplicationName              = "LucernexApp"
         BusinessUnit                 = "Accruent"
-        Environment                  = "${var.environment}"
+        Environment                  = "${var.ENVIRONMENT}"
         Owner                        = "App Department"
         CreatedOn                    = formatdate("YYYY-MM-DD hh:mm:ss ZZZ", timestamp())
-        CreatedBy                    = "Spacelift Stack_${var.environment}"
+        CreatedBy                    = "Spacelift Stack_${var.ENVIRONMENT}"
     }
 }
 
 locals {
   dv = {
     network = {
-      app_vnet_address_space              = ["10.20.1.0/24"]
-      app_pvtlink_subnet_address_prefixes = ["10.20.1.64/26"]
-      app_cmp_subnet_address_prefixes     = ["10.20.1.0/26"]
+      app_vnet_address_space              = ["11.20.1.0/24"]
+      app_pvtlink_subnet_address_prefixes = ["11.20.1.64/26"]
+      app_cmp_subnet_address_prefixes     = ["11.20.1.0/26"]
       }
     lux_subscription_id                   = "bebb6b61-5ac1-4f45-9e8d-b64f895f94e9"
 
