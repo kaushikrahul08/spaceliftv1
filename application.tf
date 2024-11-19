@@ -34,7 +34,7 @@ variable "location" {
 }
 variable "instance_number" {
   description = "Instance Number: 001, 002, ..., 998, 999"
-  default     = ["001"]
+  default     = ["002"]
 }
 
 # variable "kv_sku_name" {
