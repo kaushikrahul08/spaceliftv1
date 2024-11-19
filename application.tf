@@ -100,7 +100,8 @@ data "azurerm_subscription" "current" {}
 
 module "resource_group" {
   source               = "./modules/resource_group"
-  rg_name              = module.naming.rg_name_patterns[0]
+  for_each             = toset(module.naming.rg_name_patterns)
+  rg_name              = each.value
   location             = var.LOCATION                 
   tags                 = local.tags
 }
