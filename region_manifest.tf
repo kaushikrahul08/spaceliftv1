@@ -8,7 +8,7 @@ locals {
   regions_manifest = {
     euz = {
       azure_region        = "eastus"
-      environment = {
+      environments = {
         dv = {
             env_short_name = "dev"
             instance_number = "001"
@@ -23,7 +23,7 @@ locals {
     }
     wuz = {
       azure_region        = "westus"
-      environment = {
+      environments = {
         dv = {
             env_short_name = "dev"
             instance_number = "001"
