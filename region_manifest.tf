@@ -1,6 +1,7 @@
 locals {
   regions_defaults = {
     env_short_name = "uat"
+    instance_number = "001"
   }
 }
 
