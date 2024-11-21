@@ -17,7 +17,7 @@ data "azurerm_subscription" "current" {}
 
 
 resource "azurerm_resource_group" "resource_group" {
-  name     = 
+  name     =  substr("${local.app_prefix}-kv-${local.region.instance_number}", 0, 24)
   location = local.region.azure_region 
   tags     = local.tags
 
