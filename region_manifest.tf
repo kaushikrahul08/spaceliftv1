@@ -14,7 +14,7 @@ locals {
             env_short_name = "dev"
             instance_number = "001"
         }
-        ts = {
+        tst = {
           env_short_name = "tst"
           instance_number = "002"
          }
@@ -29,7 +29,7 @@ locals {
             env_short_name = "dev"
             instance_number = "001"
         }
-        ts = {
+        tst = {
           env_short_name = "tst"
           instance_number = "002"
          }

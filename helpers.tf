@@ -8,18 +8,22 @@ locals {
         regions                              = null
       })
     ]
-  ]) : "${x.app_region}_${x.app_environment}" => x }["${var.LOCATION}_${var.ENVIRONMENT}"]
+  ]) : "${x.app_region}_${x.app_environment}" => x }["${var.APP_REGION}_${var.APP_ENVIRONMENT}"]
 }
 
 
 
 
 
+
+
+
+#### Naming 
 module "naming" {
   source            = "./modules/naming"
   rg_configurations = [
     {
-      environment       = "${var.ENVIRONMENT}"
+      environment       = "${var.APP_ENVIRONMENT}"
       subscription_type = "lux",
       rg_type           = "shrd"
       instance_number   = "001"
