@@ -1,6 +1,5 @@
 locals {
   regions_defaults = {
-    env_short_name = "uat"
     instance_number = "001"
   }
 }
@@ -11,11 +10,9 @@ locals {
       azure_region        = "eastus"
       environments = {
         dv = {
-            env_short_name = "dev"
-            instance_number = "001"
+          instance_number = "005"
         }
         tst = {
-          env_short_name = "tst"
           instance_number = "002"
          }
 
@@ -26,11 +23,9 @@ locals {
       azure_region        = "westus"
       environments = {
         dv = {
-            env_short_name = "dev"
-            instance_number = "001"
+          instance_number = "001"
         }
         tst = {
-          env_short_name = "tst"
           instance_number = "002"
          }
 

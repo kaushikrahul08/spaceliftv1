@@ -1,5 +1,6 @@
 locals {
     applications = {
+        prefix          = "${var.APP_ENVIRONMENT}"-"${var.APP_ENVIRONMENT}"
         workload_type   = "app"
         compute_snet    = "ComputeSubnet"
         pvtlink_snet    = "PrivatelinkSubnet"
