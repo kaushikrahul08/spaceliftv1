@@ -1,18 +1,13 @@
 locals {
-    applications = {
-        workload_type   = "app"
-        compute_snet    = "ComputeSubnet"
-        pvtlink_snet    = "PrivatelinkSubnet"
-        resource_group_log_alert = ["log"]
-        # kv_dns_zone_group_name   = "kvdnsgrp${var.application_name}${var.subscription_type}${var.instance_number}"
-        # sa_dns_zone_group_name   = "sadnsgrp${var.application_name}${var.subscription_type}${var.instance_number}"
-        # sa_pes_conn_name         = "sapeconn${var.application_name}${var.subscription_type}${var.instance_number}"
-        # kv_pes_conn_name         = "kvpeconn${var.application_name}${var.subscription_type}${var.instance_number}"
-        subresource_names_sa     = ["blob"]
-        subresource_names_kv     = ["Vault"]
-        # ops_subscription_id      = ""
-        # connectivity_subscription_id = ""
-  }
+  prefix          = "${var.APP_ENVIRONMENT}-${var.APP_REGION}"
+  workload_type   = "app"
+  compute_snet    = "ComputeSubnet"
+  pvtlink_snet    = "PrivatelinkSubnet"
+  resource_group_log_alert = ["log"]
+  subresource_names_sa     = ["blob"]
+  subresource_names_kv     = ["Vault"]
+  # ops_subscription_id      = ""
+  # connectivity_subscription_id = ""
 }
 
 locals {

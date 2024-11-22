@@ -1,6 +1,5 @@
 locals {
   regions_defaults = {
-    env_short_name = "uat"
     instance_number = "001"
   }
 }
@@ -9,30 +8,37 @@ locals {
   regions_manifest = {
     euz = {
       azure_region        = "eastus"
+      enable_rg           = false
       environments = {
         dv = {
-            env_short_name = "dev"
-            instance_number = "001"
+          environment     = "${var.APP_ENVIRONMENT}"
         }
         tst = {
-          env_short_name = "tst"
-          instance_number = "002"
+          environment     = "${var.APP_ENVIRONMENT}"
          }
+        prod = {
+          environment     = "${var.APP_ENVIRONMENT}"
+         }
+
 
       }
 
     }
     wuz = {
       azure_region        = "westus"
+      enable_rg           = true
+
       environments = {
         dv = {
-            env_short_name = "dev"
-            instance_number = "001"
+          environment     = "${var.APP_ENVIRONMENT}"
         }
         tst = {
-          env_short_name = "tst"
-          instance_number = "002"
+          environment     = "${var.APP_ENVIRONMENT}"
          }
+        prod = {
+          environment     = "${var.APP_ENVIRONMENT}"
+         }
+
 
       }
 

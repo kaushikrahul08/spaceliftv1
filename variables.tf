@@ -21,7 +21,7 @@ variable "subscription_type" {
 }
 variable "APP_ENVIRONMENT" {
   description = "Environment: dev, qa,test, prod,hub,spoke,stage"
-  default = "dv" #remove these when configured at Space-lift
+  #default = "dv" #remove these when configured at Space-lift
   validation {
     condition = contains(["dv","tst","qa","uat","prod","dr"],var.APP_ENVIRONMENT)
     error_message = "Valid values for ENVIRONMENT are dv,tst,qa,uat,prod,dr"
@@ -30,7 +30,7 @@ variable "APP_ENVIRONMENT" {
 
 variable "APP_REGION" {
   description = "Azure Location (see: https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/#overview)"
-  default = "eastus"  #remove these when configured at Space-lift
+  #default = "euz"  #remove these when configured at Space-lift
 }
 
 variable "instance_number" {
@@ -78,7 +78,7 @@ variable "zones" {
 variable "enable_rg" {
   type        = bool
   description = "Controls the deployment of the Rgs and its supporting infrastructure"
-  default     = false
+  default     = "false"
 }
 
 variable "enable_keyvault" {

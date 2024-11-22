@@ -12,21 +12,21 @@ locals {
 }
 
 
-
-
-
-
-
-
 #### Naming 
 module "naming" {
   source            = "./modules/naming"
   rg_configurations = [
     {
-      environment       = "${var.APP_ENVIRONMENT}"
+      #environment       = "${var.APP_ENVIRONMENT}"
       subscription_type = "lux",
       rg_type           = "shrd"
       instance_number   = "001"
+    },
+    {
+      #environment       = "${var.APP_ENVIRONMENT}"
+      subscription_type = "lux",
+      rg_type           = "shrd"
+      instance_number   = "002"
     }
   ]
 
