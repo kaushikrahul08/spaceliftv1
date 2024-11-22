@@ -10,7 +10,7 @@ locals {
       azure_region        = "eastus"
       environments = {
         dv = {
-          instance_number = "005"
+          environment     = "${var.APP_ENVIRONMENT}"
         }
         tst = {
           instance_number = "002"

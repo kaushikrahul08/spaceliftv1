@@ -36,7 +36,7 @@ variable "snet_configurations" {
 variable "rg_configurations" {
   description = "List of maps containing VM configurations"
   type = list(object({
-    environment        : string
+    #environment        : string
     subscription_type  : string
     rg_type            : string
     instance_number    : string
@@ -91,7 +91,7 @@ locals {
   az = {
     virtual_networks = [for vnet in var.vnet_configurations : { name = format("vnet-%s-%s-%s-%s", vnet.subscription_type, vnet.environment, vnet.region, vnet.instance_number) } ]
     subnet = [for snet in var.snet_configurations : { name = format("snet-%s-%s-%s", snet.subscription_type, snet.subnet_type, snet.instance_number) } ]
-    rg = [for rg in var.rg_configurations : { name = format("rg-%s-%s-%s-%s",rg.environment, rg.subscription_type, rg.rg_type, rg.instance_number) } ]
+    rg = [for rg in var.rg_configurations : { name = format("rg-%s-%s-%s", rg.subscription_type, rg.rg_type, rg.instance_number) } ]
     kv = [for kv in var.kv_configurations : { name = format("kv-%s-%s-%s-%s", kv.subscription_type, kv.kv_type,kv.region,kv.instance_number) } ] 
     lga = [for lga in var.lga_configurations : { name = format("lg-%s-%s-%s-%s", lga.subscription_type, lga.lga_type,lga.region,lga.instance_number) } ]
     vm = [for vm in var.vm_configurations : { name = format("vm-%s-%s", vm.vm_name,vm.instance_number) } ]

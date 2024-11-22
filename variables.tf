@@ -30,7 +30,7 @@ variable "APP_ENVIRONMENT" {
 
 variable "APP_REGION" {
   description = "Azure Location (see: https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies/#overview)"
-  default = "eastus"  #remove these when configured at Space-lift
+  default = "euz"  #remove these when configured at Space-lift
 }
 
 variable "instance_number" {
