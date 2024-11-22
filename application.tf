@@ -14,11 +14,3 @@ module "resource_group" {
   location             = local.region.azure_region              
   tags                 = local.tags
 }
-
-
-# resource "azurerm_resource_group" "resource_group" {
-#   name     =  substr("${local.prefix}-kv-${local.region.instance_number}", 0, 24)
-#   location = local.region.azure_region 
-#   tags     = local.tags
-
-# }
