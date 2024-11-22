@@ -14,21 +14,31 @@ locals {
           environment     = "${var.APP_ENVIRONMENT}"
         }
         tst = {
-          instance_number = "002"
+          environment     = "${var.APP_ENVIRONMENT}"
          }
+        prod = {
+          environment     = "${var.APP_ENVIRONMENT}"
+         }
+
 
       }
 
     }
     wuz = {
       azure_region        = "westus"
+      enable_rg           = true
+
       environments = {
         dv = {
-          instance_number = "001"
+          environment     = "${var.APP_ENVIRONMENT}"
         }
         tst = {
-          instance_number = "002"
+          environment     = "${var.APP_ENVIRONMENT}"
          }
+        prod = {
+          environment     = "${var.APP_ENVIRONMENT}"
+         }
+
 
       }
 
