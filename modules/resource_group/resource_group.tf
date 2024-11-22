@@ -1,5 +1,9 @@
 
 # Service Abbreviation
+variable "abbreviation" {
+  default = "rg"
+}
+
 variable "location" {
   default = ""
 }
@@ -9,7 +13,6 @@ variable "rg_name" {}
 # Optional
 variable "tags" {}
 
-# Create a Resource Group
 resource "azurerm_resource_group" "resource_group" {
   name     = var.rg_name
   location = var.location
@@ -17,84 +20,21 @@ resource "azurerm_resource_group" "resource_group" {
 
 lifecycle {
     ignore_changes = [
-      tags["CreatedOn"]
+      tags["CreatedOnDate"]
     ]
   }
 }
 
-
-### Output
-
-# output "resource_group_names" {
-#   value = [for rg in azurerm_resource_group.resource_group : rg.name]
-# }
-
-
-output "rg_name_subs" {
-  value = element(
-    flatten([
-      for rg in azurerm_resource_group.resource_group : rg.name if
-      can (regex(".*(mgmt|conn|iden|log|app).*",rg.name))
-    ]),
-    0
-  )
-  
+# Outputs
+output "resource_group" {
+  value = azurerm_resource_group.resource_group
 }
-
-
-output "rg_name_shrd" {
-  value = element(
-    flatten([
-      for rg in azurerm_resource_group.resource_group : rg.name if
-      can (regex(".*(shrd|log).*",rg.name))
-    ]),
-    0
-  )
-  
+output "id" {
+  value = azurerm_resource_group.resource_group.id
 }
-
-
-
-
-# output "rg_name_sub" {
-#   value = azurerm_resource_group.resource_group[0].name
-# }
-
-# output "rg_name_shrd" {
-#   value = azurerm_resource_group.resource_group[1].name
-  
-# }
-
-# output "rg_name_mgmt" {
-#   value = element(
-#     flatten([
-#       for rg in azurerm_resource_group.resource_group : rg.name if
-#       can (regex(".*mgmt.*",rg.name))
-#     ]),
-#     0
-#   )
-  
-# }
-
-# output "rg_name_conn" {
-#   value = element(
-#     flatten([
-#       for rg in azurerm_resource_group.resource_group : rg.name if
-#       can (regex(".*conn.*",rg.name))
-#     ]),
-#     0
-#   )
-  
-# }
-
-# output "rg_name_iden" {
-#   value = element(
-#     flatten([
-#       for rg in azurerm_resource_group.resource_group : rg.name if
-#       can (regex(".*iden.*",rg.name))
-#     ]),
-#     0
-#   )
-  
-# }
-
+output "name" {
+  value = azurerm_resource_group.resource_group.name
+}
+output "location" {
+  value = azurerm_resource_group.resource_group.location
+}
