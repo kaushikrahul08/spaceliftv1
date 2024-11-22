@@ -78,7 +78,7 @@ variable "zones" {
 variable "enable_rg" {
   type        = bool
   description = "Controls the deployment of the Rgs and its supporting infrastructure"
-  default     = false
+  default     = "false"
 }
 
 variable "enable_keyvault" {
