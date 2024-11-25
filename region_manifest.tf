@@ -8,7 +8,7 @@ locals {
   regions_manifest = {
     euz = {
       azure_region        = "eastus"
-      enable_rg           = true
+      enable_rg           = false
       environments = {
         dv = {
           environment     = "${var.APP_ENVIRONMENT}"
