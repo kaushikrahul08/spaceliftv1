@@ -26,7 +26,7 @@ locals {
     }
     wuz = {
       azure_region        = "westus"
-      enable_rg           = true
+      enable_rg           = false
 
       environments = {
         dv = {
