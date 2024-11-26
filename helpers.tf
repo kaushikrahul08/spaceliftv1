@@ -19,13 +19,13 @@ module "naming" {
     {
       #environment       = "${var.APP_ENVIRONMENT}"
       subscription_type = "lux",
-      rg_type           = "shrd"
+      rg_type           = "app01"
       instance_number   = "001"
     },
     {
       #environment       = "${var.APP_ENVIRONMENT}"
       subscription_type = "lux",
-      rg_type           = "shrd"
+      rg_type           = "app02"
       instance_number   = "002"
     }
   ]
