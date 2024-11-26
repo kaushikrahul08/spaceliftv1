@@ -7,7 +7,7 @@ locals {
 locals {
   regions_manifest = {
     euz = {
-      azure_region        = "eastus"
+      azure_region        = "westus"
       enable_rg           = true
       environments = {
         dv = {
@@ -25,7 +25,7 @@ locals {
 
     }
     wuz = {
-      azure_region        = "eastus"
+      azure_region        = "westus"
       enable_rg           = true
 
       environments = {
