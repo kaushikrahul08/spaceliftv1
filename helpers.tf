@@ -25,7 +25,7 @@ module "naming" {
     {
       #environment       = "${var.APP_ENVIRONMENT}"
       subscription_type = "lux",
-      rg_type           = "app02"
+      rg_type           = "test"
       instance_number   = "002"
     }
   ]
