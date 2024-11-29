@@ -13,6 +13,9 @@ locals {
         dv = {
           environment     = "${var.APP_ENVIRONMENT}"
         }
+        qa = {
+          environment     = "${var.APP_ENVIRONMENT}"
+        }
         tst = {
           environment     = "${var.APP_ENVIRONMENT}"
          }
