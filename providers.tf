@@ -12,6 +12,7 @@ terraform {
     azurerm = {
       source  = "hashicorp/azurerm"
       version = "~> 3.102.0"
+      features {}
     }
     github = {
       source  = "integrations/github"
@@ -32,9 +33,6 @@ terraform {
 ## AZURERM
 ################################################################################
 
-##provider "azurerm" {
-## features {}
-##}
 
 ################################################################################
 ## AZURE AD
